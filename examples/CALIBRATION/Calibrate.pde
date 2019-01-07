@@ -36,7 +36,7 @@ void calibrate() {
   }
   QRDecomposition problem = new QRDecomposition(A);
   x = problem.solve(y);
-  if (!calibrated) {
+  if (/*!calibrated*/true) { // latching bug
     calibrated = true;
     guiSave.show();
     guiTesting.addItem("Testing Mode", 1);
