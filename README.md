@@ -33,7 +33,7 @@ After setting the projector, fix the Kinect to face the space onto which you are
 The Kinect and projector must be *totally immobilized* during calibration and after, because a calibration only works for that positioning of the two devices together.
 
 
-###2) Software setup
+### 2) Software setup
 
 Set your computer's display to extended/dual screen and project the secondary screen. Open up **CALIBRATION.pde** and make sure to set the `pWidth` and `pHeight` variables at the top to exactly match the resolution of the secondary display, e.g. 1024x768.
 
@@ -106,20 +106,20 @@ You must first make sure to go through the calibration process and generate the 
 
 Descriptions for test applications follow below:
 
-###TestSkeleton, TestKrang, TestFireball
+### TestSkeleton, TestKrang, TestFireball
 These demos are the simplest applications of the calibration. The Kinect tracks users and returns real world coordinates for their joints and limbs, and we project objects onto them. Skeleton projects the entire skeleton onto each person, Krang projects an image of [Krang](http://en.wikipedia.org/wiki/Krang) onto users' torsos. 
 
-###TestBodyGraphics, TestBodyImage, TestBodyMovie, TestBodyShader
+### TestBodyGraphics, TestBodyImage, TestBodyMovie, TestBodyShader
 Show the process of projecting graphics onto a tracked human body, via the Kinect's userImage. They are identical, except for the content of the graphics, showing how to project a PGraphics object, a PImage, a Movie, and a shader, respectively.
 
-###TestRibbons
+### TestRibbons
 Similar to the body projection examples, but instead projects ribbon-like lines around the contour of a body, tracing them onto the background behind the user.
 
-###TestBackgroundFX
+### TestBackgroundFX
 This example shows how a tracked user can manipulate background graphics projected behind them onto a screen or floor.
 
-###TestFallingPolygons
+### TestFallingPolygons
 Similar to TestBackgroundFX as it involves a user manipulating a background screen. A game in which polygons fall from the sky and a user can physically interact with them on a wall.
 
-###RENDER
+### RENDER
 This is a high-level application combining the previous examples with a user interface for applying the effects. It is currently still under development.
