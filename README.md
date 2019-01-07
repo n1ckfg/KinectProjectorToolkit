@@ -1,6 +1,7 @@
-#Kinect v2/Processing 3 Projector Toolkit
-port by @bradenneufeld
-https://github.com/bradenneufeld/K2P3Toolkit
+#Kinect v2/Processing 3 Projector Toolkit<br>
+by @genekogan<br>
+p3 port by @bradenneufeld<br>
+soni p3 port by @n1ckfg
 
 Processing library for calibrating a Microsoft Kinect v2 (Kinect for Xbox One) and a projector together, such that projected image is automatically aligned to the physical space it is projecting onto, facilitating the projection of images onto moving bodies and surfaces.
 
