@@ -1,4 +1,4 @@
-#Kinect v2/Processing 3 Projector Toolkit<br>
+# Kinect Projector Toolkit<br>
 by @genekogan<br>
 p3 port by @bradenneufeld<br>
 soni p3.4 port by @n1ckfg
