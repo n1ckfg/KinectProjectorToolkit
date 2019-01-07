@@ -1,8 +1,8 @@
 //==========================================================
 // set resolution of your projector image/second monitor
 // and name of your calibration file-to-be
-int pWidth = 800;
-int pHeight = 600; 
+int pWidth = 1024;
+int pHeight = 768; 
 String calibFilename = "calibration.txt";
 
 
@@ -10,16 +10,12 @@ String calibFilename = "calibration.txt";
 //==========================================================
 
 import javax.swing.JFrame;
-import org.openkinect.freenect.*;
-import org.openkinect.freenect2.*;
-import org.openkinect.processing.*;
-
+import SimpleOpenNI.*;
 import gab.opencv.*;
 import controlP5.*;
 import Jama.*;
 
-Kinect2 kinect;
-
+SimpleOpenNI kinect;
 OpenCV opencv;
 ChessboardFrame frameBoard;
 ChessboardApplet ca;
@@ -42,16 +38,13 @@ void setup()
   frameBoard = new ChessboardFrame();
 
   // set up kinect 
-  kinect = new Kinect2(this);
-  kinect.initDepth(); 
-  kinect.initVideo();
-  kinect.initRegistered();
-  kinect.initIR();
-  kinect.initDevice();
-  
-  opencv = new OpenCV(this, kinect.depthWidth, kinect.depthHeight);
-
-  depthMap = new PVector[kinect.depthWidth*kinect.depthHeight];
+  kinect = new SimpleOpenNI(this);
+  kinect.setMirror(false);
+  kinect.enableDepth();
+  //kinect.kinect.enableIR();
+  kinect.enableRGB();
+  kinect.alternativeViewPointDepthToImage();
+  opencv = new OpenCV(this, kinect.depthWidth(), kinect.depthHeight());
 
   // matching pairs
   ptsK = new ArrayList<PVector>();
@@ -66,34 +59,11 @@ void draw()
   // draw chessboard onto scene
   projPoints = drawChessboard(cx, cy, cwidth);
 
-  // update depth map
-  depthMap = depthMapRealWorld();
-
-  src = kinect.getRegisteredImage();
-  
-  // mirroring
-  for (int h = 0; h < kinect.depthHeight; h++)
-  {
-    for (int r = 0; r < kinect.depthWidth / 2; r++)
-    {
-      PVector temp = depthMap[h*kinect.depthWidth + r];
-      depthMap[h*kinect.depthWidth + r] = depthMap[h*kinect.depthWidth + (kinect.depthWidth - r - 1)];
-      depthMap[h*kinect.depthWidth + (kinect.depthWidth - r - 1)] = temp;
-    }
-  }
-  
-  // mirroring
-  for (int h = 0; h < src.height; h++)
-  {
-    for (int r = 0; r < src.width / 2; r++)
-    {
-      int temp2 = src.get(r, h);   //h*src.width + r);
-      src.set(r, h, src.get(src.width - r - 1, h));
-      src.set(src.width - r - 1, h, temp2);
-    }
-  }
-
-  opencv.loadImage(src);
+  // update kinect and look for chessboard
+  kinect.update();
+  depthMap = kinect.depthMapRealWorld();
+  opencv.loadImage(kinect.rgbImage());
+  //opencv.loadImage(kinect.irImage());
   opencv.gray();
 
   if (isSearchingBoard)
@@ -111,7 +81,7 @@ void drawGui()
   translate(30, 120);
   textSize(22);
   fill(255);
-  image(src, 0, 0);
+  image(kinect.rgbImage(), 0, 0);
   
   // draw chessboard corners, if found
   if (isSearchingBoard) {
@@ -137,7 +107,7 @@ void drawGui()
   // draw GUI
   pushMatrix();
   pushStyle();
-  translate(kinect.depthWidth+70, 40); // this is black box
+  translate(kinect.depthWidth()+70, 40); // this is black box
   fill(0);
   rect(0, 0, 450, 680); // blackbox size
   fill(255);
@@ -166,7 +136,7 @@ void addPointPair() {
 }
 
 PVector getDepthMapAt(int x, int y) {
-  PVector dm = depthMap[kinect.depthWidth * y + x];
+  PVector dm = depthMap[kinect.depthWidth() * y + x];
   
   return new PVector(dm.x, dm.y, dm.z);
 }
@@ -189,26 +159,27 @@ void loadC() {
 
 void mousePressed() {
   if (calibrated && testingMode) {
-    testPoint = new PVector(constrain(mouseX-30, 0, kinect.depthWidth-1), 
-                            constrain(mouseY-120, 0, kinect.depthHeight-1));
-    int idx = kinect.depthWidth * (int) testPoint.y + (int) testPoint.x;
+    testPoint = new PVector(constrain(mouseX-30, 0, kinect.depthWidth()-1), 
+                            constrain(mouseY-120, 0, kinect.depthHeight()-1));
+    int idx = kinect.depthWidth() * (int) testPoint.y + (int) testPoint.x;
     
     testPointP = convertKinectToProjector(depthMap[idx]);
   }
 }
 
 
-// all functions below used to generate depthMapRealWorld point cloud
+// override functions below used to generate depthMapRealWorld point cloud
+/*
 PVector[] depthMapRealWorld()
 {
   int[] depth = kinect.getRawDepth();
   int skip = 1;
-  for (int y = 0; y < kinect.depthHeight; y+=skip) {
-    for (int x = 0; x < kinect.depthWidth; x+=skip) {
-        int offset = x + y * kinect.depthWidth;
+  for (int y = 0; y < kinect.depthHeight(); y+=skip) {
+    for (int x = 0; x < kinect.depthWidth(); x+=skip) {
+        int offset = x + y * kinect.depthWidth();
         //calculate the x, y, z camera position based on the depth information
         PVector point = depthToPointCloudPos(x, y, depth[offset]);
-        depthMap[kinect.depthWidth * y + x] = point;
+        depthMap[kinect.depthWidth() * y + x] = point;
       }
     }
     return depthMap;
@@ -235,3 +206,4 @@ static class CameraParams {
   static float p1 = 0.0;
   static float p2 = 0.0;
 }
+*/
