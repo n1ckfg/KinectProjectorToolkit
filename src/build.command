@@ -13,5 +13,5 @@ cd $DIR
 javac -cp /Applications/Processing/Processing3.app/Contents/Java/core.jar KinectProjectorToolkit/*.java
 mv KinectProjectorToolkit/*.class build/KinectProjectorToolkit/
 cd build
-jar cvfm ../KinectProjectorToolkit.jar manifest.txt KinectProjectorToolkit/*.class
+jar cvfm ../KinectProjectorToolkit.jar manifest.txt KinectProjectorToolkit/*.class data/*.glsl
 
