@@ -5,7 +5,6 @@ int pWidth = 1280;
 int pHeight = 720; 
 String calibFilename = "calibration.txt";
 
-
 //==========================================================
 //==========================================================
 
@@ -30,8 +29,7 @@ boolean calibrated = false;
 boolean testingMode = false;
 int cx, cy, cwidth;
 
-void setup() 
-{
+void setup() {
   surface.setSize(1200, 768);
   
   textFont(createFont("Courier", 24));
@@ -54,8 +52,7 @@ void setup()
   setupGui();
 }
 
-void draw() 
-{
+void draw() {
   // draw chessboard onto scene
   projPoints = drawChessboard(cx, cy, cwidth);
 
@@ -66,14 +63,12 @@ void draw()
   //opencv.loadImage(kinect.irImage());
   opencv.gray();
 
-  if (isSearchingBoard)
-    foundPoints = opencv.findChessboardCorners(4, 3);
+  if (isSearchingBoard) foundPoints = opencv.findChessboardCorners(4, 3);
 
   drawGui();
 }
 
-void drawGui() 
-{
+void drawGui() {
   background(0, 100, 0);
 
   // draw the RGB image
@@ -90,14 +85,19 @@ void drawGui()
       if (getDepthMapAt((int)p.x, (int)p.y).z > 0) {
         fill(0, 255, 0);
         numFoundPoints += 1;
+      } else {
+        fill(255, 0, 0);
       }
-      else  fill(255, 0, 0);
       ellipse(p.x, p.y, 5, 5);
     }
-    if (numFoundPoints == 12)  guiAdd.show();
-    else                       guiAdd.hide();
+    if (numFoundPoints == 12) {
+      guiAdd.show();
+    } else {
+      guiAdd.hide();
+    }
+  } else {
+    guiAdd.hide();
   }
-  else  guiAdd.hide();
   if (calibrated && testingMode) {
     fill(255, 0, 0);
     ellipse(testPoint.x, testPoint.y, 10, 10);
@@ -156,17 +156,6 @@ void loadC() {
   loadCalibration(calibFilename);
   guiTesting.addItem("Testing Mode", 1);
 }
-
-void mousePressed() {
-  if (calibrated && testingMode) {
-    testPoint = new PVector(constrain(mouseX-30, 0, kinect.depthWidth()-1), 
-                            constrain(mouseY-120, 0, kinect.depthHeight()-1));
-    int idx = kinect.depthWidth() * (int) testPoint.y + (int) testPoint.x;
-    
-    testPointP = convertKinectToProjector(depthMap[idx]);
-  }
-}
-
 
 // override functions below used to generate depthMapRealWorld point cloud
 /*
