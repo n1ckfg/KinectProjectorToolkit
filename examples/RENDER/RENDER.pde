@@ -18,7 +18,7 @@ int samplingMode, idxShader, numframes, idxBg;
 
 void setup()
 {
-  size(displayWidth, displayHeight, P2D); 
+  size(1280, 720, P2D); 
 
   // setup Kinect
   kinect = new SimpleOpenNI(this); 

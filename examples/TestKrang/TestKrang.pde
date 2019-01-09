@@ -8,7 +8,7 @@ Movie krang;
 
 void setup()
 {
-  size(displayWidth, displayHeight, P2D); 
+  size(1280, 720, P2D); 
   imageMode(CENTER);
   
   // setup Kinect

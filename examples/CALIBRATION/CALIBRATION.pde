@@ -1,8 +1,8 @@
 //==========================================================
 // set resolution of your projector image/second monitor
 // and name of your calibration file-to-be
-int pWidth = 1024;
-int pHeight = 768; 
+int pWidth = 1280;
+int pHeight = 720; 
 String calibFilename = "calibration.txt";
 
 
